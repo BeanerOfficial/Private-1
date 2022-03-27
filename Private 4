@@ -1,0 +1,170 @@
+-- Gui to Lua
+-- Version: 3.2
+
+-- Instances:
+
+local Main = Instance.new("ScreenGui")
+local Frame = Instance.new("Frame")
+local TextLabel = Instance.new("TextLabel")
+local FeBall = Instance.new("TextButton")
+local FeFlip = Instance.new("TextButton")
+local FeInvis = Instance.new("TextButton")
+local PFGui = Instance.new("TextButton")
+local FeBall_2 = Instance.new("TextButton")
+local DomainX = Instance.new("TextButton")
+
+--Properties:
+
+Main.Name = "Main"
+Main.Parent = game.CoreGui
+Main.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+Frame.Parent = Main
+Frame.BackgroundColor3 = Color3.fromRGB(65, 65, 65)
+Frame.Position = UDim2.new(0.0675300658, 0, 0.521019101, 0)
+Frame.Size = UDim2.new(0, 333, 0, 212)
+
+TextLabel.Parent = Frame
+TextLabel.BackgroundColor3 = Color3.fromRGB(93, 93, 93)
+TextLabel.Size = UDim2.new(0, 333, 0, 27)
+TextLabel.Font = Enum.Font.SourceSans
+TextLabel.Text = "Bean Hub | Made By Tomceelen#6486"
+TextLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
+TextLabel.TextSize = 14.000
+
+FeBall.Name = "Fe Ball"
+FeBall.Parent = Frame
+FeBall.BackgroundColor3 = Color3.fromRGB(52, 52, 52)
+FeBall.Position = UDim2.new(0.0270270277, 0, 0.193396211, 0)
+FeBall.Size = UDim2.new(0, 100, 0, 50)
+FeBall.Font = Enum.Font.SourceSans
+FeBall.Text = "Fe Ball"
+FeBall.TextColor3 = Color3.fromRGB(0, 0, 0)
+FeBall.TextSize = 14.000
+FeBall.MouseButton1Down:connect(function()
+	local UserInputService = game:GetService("UserInputService")
+	local RunService = game:GetService("RunService")
+	local Camera = workspace.CurrentCamera
+
+	local SPEED_MULTIPLIER = 30
+	local JUMP_POWER = 60
+	local JUMP_GAP = 0.3
+
+	local character = game.Players.LocalPlayer.Character
+
+	for i,v in ipairs(character:GetDescendants()) do
+		if v:IsA("BasePart") then
+			v.CanCollide = false
+		end
+	end
+
+	local ball = character.HumanoidRootPart
+	ball.Shape = Enum.PartType.Ball
+	ball.Size = Vector3.new(5,5,5)
+	local humanoid = character:WaitForChild("Humanoid")
+	local params = RaycastParams.new()
+	params.FilterType = Enum.RaycastFilterType.Blacklist
+	params.FilterDescendantsInstances = {character}
+
+	local tc = RunService.RenderStepped:Connect(function(delta)
+		ball.CanCollide = true
+		humanoid.PlatformStand = true
+		if UserInputService:GetFocusedTextBox() then return end
+		if UserInputService:IsKeyDown("W") then
+			ball.RotVelocity -= Camera.CFrame.RightVector * delta * SPEED_MULTIPLIER
+		end
+		if UserInputService:IsKeyDown("A") then
+			ball.RotVelocity -= Camera.CFrame.LookVector * delta * SPEED_MULTIPLIER
+		end
+		if UserInputService:IsKeyDown("S") then
+			ball.RotVelocity += Camera.CFrame.RightVector * delta * SPEED_MULTIPLIER
+		end
+		if UserInputService:IsKeyDown("D") then
+			ball.RotVelocity += Camera.CFrame.LookVector * delta * SPEED_MULTIPLIER
+		end
+		--ball.RotVelocity = ball.RotVelocity - Vector3.new(0,ball.RotVelocity.Y/50,0)
+	end)
+
+	UserInputService.JumpRequest:Connect(function()
+		local result = workspace:Raycast(
+			ball.Position,
+			Vector3.new(
+				0,
+				-((ball.Size.Y/2)+JUMP_GAP),
+				0
+			),
+			params
+		)
+		if result then
+			ball.Velocity = ball.Velocity + Vector3.new(0,JUMP_POWER,0)
+		end
+	end)
+
+	Camera.CameraSubject = ball
+	humanoid.Died:Connect(function() tc:Disconnect() end)
+end)
+
+FeFlip.Name = "Fe Flip"
+FeFlip.Parent = Frame
+FeFlip.BackgroundColor3 = Color3.fromRGB(52, 52, 52)
+FeFlip.Position = UDim2.new(0.666666687, 0, 0.193396211, 0)
+FeFlip.Size = UDim2.new(0, 100, 0, 50)
+FeFlip.Font = Enum.Font.SourceSans
+FeFlip.Text = "Fe Flip"
+FeFlip.TextColor3 = Color3.fromRGB(0, 0, 0)
+FeFlip.TextSize = 14.000
+FeFlip.MouseButton1Down:connect(function()
+	loadstring(game:HttpGet('https://raw.githubusercontent.com/BeanerOfficial/Private-1/main/Private%203'))()
+end)
+
+FeInvis.Name = "Fe Invis"
+FeInvis.Parent = Frame
+FeInvis.BackgroundColor3 = Color3.fromRGB(52, 52, 52)
+FeInvis.Position = UDim2.new(0.348348379, 0, 0.193396211, 0)
+FeInvis.Size = UDim2.new(0, 100, 0, 50)
+FeInvis.Font = Enum.Font.SourceSans
+FeInvis.Text = "Fe Invis"
+FeInvis.TextColor3 = Color3.fromRGB(0, 0, 0)
+FeInvis.TextSize = 14.000
+FeInvis.MouseButton1Down:connect(function()
+	loadstring(game:HttpGet('https://raw.githubusercontent.com/BeanerOfficial/Private-1/main/Private'))()
+end)
+
+PFGui.Name = "PF Gui"
+PFGui.Parent = Frame
+PFGui.BackgroundColor3 = Color3.fromRGB(52, 52, 52)
+PFGui.Position = UDim2.new(0.666666627, 0, 0.599056602, 0)
+PFGui.Size = UDim2.new(0, 100, 0, 50)
+PFGui.Font = Enum.Font.SourceSans
+PFGui.Text = "PF Gui"
+PFGui.TextColor3 = Color3.fromRGB(0, 0, 0)
+PFGui.TextSize = 14.000
+PFGui.MouseButton1Down:connect(function()
+	loadstring(game:HttpGet('https://raw.githubusercontent.com/BeanerOfficial/Private-1/main/Private%202'))()
+end)
+
+FeBall_2.Name = "Fe Ball"
+FeBall_2.Parent = Frame
+FeBall_2.BackgroundColor3 = Color3.fromRGB(52, 52, 52)
+FeBall_2.Position = UDim2.new(0.348348349, 0, 0.599056602, 0)
+FeBall_2.Size = UDim2.new(0, 100, 0, 50)
+FeBall_2.Font = Enum.Font.SourceSans
+FeBall_2.Text = "Syntax V2"
+FeBall_2.TextColor3 = Color3.fromRGB(0, 0, 0)
+FeBall_2.TextSize = 14.000
+FeBall_2.MouseButton1Down:connect(function()
+	loadstring(game:HttpGet('https://ghostbin.com/AiiO2'))()
+end)
+
+DomainX.Name = "Domain X"
+DomainX.Parent = Frame
+DomainX.BackgroundColor3 = Color3.fromRGB(52, 52, 52)
+DomainX.Position = UDim2.new(0.0270270277, 0, 0.599056602, 0)
+DomainX.Size = UDim2.new(0, 100, 0, 50)
+DomainX.Font = Enum.Font.SourceSans
+DomainX.Text = "Domain X"
+DomainX.TextColor3 = Color3.fromRGB(0, 0, 0)
+DomainX.TextSize = 14.000
+DomainX.MouseButton1Down:connect(function()
+	loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexware/DomainX/main/source',true))()
+end)
